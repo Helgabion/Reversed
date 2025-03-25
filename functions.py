@@ -1,28 +1,7 @@
 import pygame
 import constant
 import os
-import copy
 
-def object_copy(instance, init_args=None):
-    if init_args:
-        new_obj = instance.__class__(**init_args)
-    else:
-        new_obj = instance.__class__()
-    if hasattr(instance, '__dict__'):
-        for k in instance.__dict__ :
-            try:
-                attr_copy = copy.deepcopy(getattr(instance, k))
-            except Exception as e:
-                attr_copy = object_copy(getattr(instance, k))
-            setattr(new_obj, k, attr_copy)
-
-        new_attrs = list(new_obj.__dict__.keys())
-        for k in new_attrs:
-            if not hasattr(instance, k):
-                delattr(new_obj, k)
-        return new_obj
-    else:
-        return instance
 
 def load_image(name): #thanks to DaFluffyPotato
     img = pygame.image.load(constant.ASSETS_PATH + name).convert_alpha()

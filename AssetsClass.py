@@ -1,4 +1,4 @@
-from functions import load_images, load_image
+from functions import load_images
 
 class Assets(object):
     def __init__(self):

@@ -23,8 +23,8 @@ class Game(object):
 
         self.assets = Assets()
 
-        # self.level_test = Level(self, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNTNN","NNNNN","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[1,1,0,1,1],[1,0,0,1,1],[1,1,1,0,1],[0,1,1,1,1],[1,1,1,1,0]],[[1]],[[1,1,1],[1,0,1],[1,1,1]],[[1]]])
-        self.level_test = Level(self, [[0,0],[0,0]], [[0,0],[0,0]], ["NN","NN"], ["NN","NN"],[[[1]], [[1]]])
+        self.level_test = Level(self, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNNNN","NNNBF","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[1,1],[1,1]],[[1]],[[1]],[[1]],[[1,1,1],[1,0,1],[1,1,1]],[[1]]])
+        # self.level_test = Level(self, [[0,0],[0,0]], [[0,0],[0,0]], ["NN","NN"], ["NN","NN"],[[[1]], [[1]]])
         # self.level_test = Level(self, [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], ["NNN","NBN","NNN"], ["NNN","NNN","NNN"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
 
         self.level_test.load()
@@ -52,14 +52,7 @@ while game.running:
             if key == 'z':
                 game.level_test.backtrack()
             if key == 'g':
-                color = []
-                for i in range(len(game.level_test.state)):
-                    color.append([])
-                    for x in range(game.level_test.grid_size):
-                        color[i].append([])
-                        for y in range(game.level_test.grid_size):
-                            color[i][x].append(game.level_test.state[i][x][y].color)
-                print(color)
+                print(game.level_test.state)
 
                     
                 
