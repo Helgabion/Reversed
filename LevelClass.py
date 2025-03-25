@@ -5,32 +5,20 @@ from functions import collide
 
 
 class Level(object):
-    def __init__(self, game, colors_L=None, colors_R=None, layout_L=None, layout_R=None):
+    def __init__(self, game, colors_L, colors_R, layout_L, layout_R, pattern_list):
         self.game = game
         self.background = game.assets.backgrounds['Temp']
         self.current_background = 0
 
-        if colors_L is None:
-            self.colors_L = []
-        else:
-            self.colors_L = colors_L
+        self.colors_L = colors_L
+        self.colors_R = colors_R
 
-        if colors_R is None:
-            self.colors_R = []
-        else:
-            self.colors_R = colors_R
-
-        if layout_L is None:
-            self.layout_L = []
-        else:
-            self.layout_L = layout_L
-
-        if layout_R is None:
-            self.layout_R = []
-        else:
-            self.layout_R = layout_R
+        self.layout_L = layout_L
+        self.layout_R = layout_R
 
         self.grid_size = len(self.colors_L)
+
+        self.pattern_list = pattern_list
 
     def load(self):
         self.blocks_L = []
@@ -88,8 +76,16 @@ class Level(object):
                 self.game.screen.blit(pygame.transform.scale(self.blocks_R[x][y].sprite[self.blocks_R[x][y].color], (constant.SQUARE_SIZE,constant.SQUARE_SIZE)), ((y+self.grid_size)*constant.SQUARE_SIZE, x*constant.SQUARE_SIZE))
 
 
-    def click(self, coords):  
-        self.flip(coords)
+    def click(self, coords):
+        pattern = self.pattern_list.pop(0)
+        for x in range(len(pattern[0])):
+            for y in range(len(pattern[0])):
+                if pattern[y][x]:
+                    self.flip([coords[0]+x-len(pattern[0])//2,coords[1]+y-len(pattern[0])//2])
+
+
+        
+
         if self.check_puzzle():
             self.current_background = 1
 

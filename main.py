@@ -19,9 +19,9 @@ class Game(object):
 
         self.assets = Assets()
 
-        self.level_test = Level(self, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNTFN","NNBNN","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"])
+        self.level_test = Level(self, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNBNN","NNNNN","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
         # self.level_test = Level(self, [[0,0],[0,0]], [[0,0],[0,0]], ["FN","NN"], ["NN","NN"])
-        # self.level_test = Level(self, [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], ["BNT","NTN","NNF"], ["NNN","NNN","NNN"])
+        # self.level_test = Level(self, [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], ["NNN","NBN","NNN"], ["NNN","NNN","NNN"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
 
         self.level_test.load()
         self.mouse_position = [0,0]
