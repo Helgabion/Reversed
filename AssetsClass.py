@@ -6,5 +6,6 @@ class Assets(object):
                        'Bomb' : load_images('Sprites/Blocks/Bomb'),
                        'Tornado' : load_images('Sprites/Blocks/Tornado'),
                        'Freeze' : load_images('Sprites/Blocks/Freeze'),
-                       'Solid' : load_images('Sprites/Blocks/Solid')}
+                       'Solid' : load_images('Sprites/Blocks/Solid'),
+                       'Pattern' : load_images('Sprites/Blocks/Pattern')}
         self.backgrounds = {'Temp' : load_images('Backgrounds')}

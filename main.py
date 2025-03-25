@@ -4,6 +4,10 @@ import constant
 from AssetsClass import Assets
 from LevelClass import Level
 
+
+programIcon = pygame.image.load('icon.png')
+pygame.display.set_icon(programIcon)
+
 class Game(object):
     def __init__(self):
         pygame.init()
@@ -19,8 +23,8 @@ class Game(object):
 
         self.assets = Assets()
 
-        self.level_test = Level(self, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNBNN","NNNNN","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
-        # self.level_test = Level(self, [[0,0],[0,0]], [[0,0],[0,0]], ["FN","NN"], ["NN","NN"])
+        # self.level_test = Level(self, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNTNN","NNNNN","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[1,1,0,1,1],[1,0,0,1,1],[1,1,1,0,1],[0,1,1,1,1],[1,1,1,1,0]],[[1]],[[1,1,1],[1,0,1],[1,1,1]],[[1]]])
+        self.level_test = Level(self, [[0,0],[0,0]], [[0,0],[0,0]], ["NN","NN"], ["NN","NN"],[[[1]], [[1]]])
         # self.level_test = Level(self, [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], ["NNN","NBN","NNN"], ["NNN","NNN","NNN"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
 
         self.level_test.load()
@@ -45,8 +49,18 @@ while game.running:
 
         elif event.type == pygame.KEYDOWN:
             key=pygame.key.name(event.key)
-            if key == 't':
-                pass
+            if key == 'z':
+                game.level_test.backtrack()
+            if key == 'g':
+                color = []
+                for i in range(len(game.level_test.state)):
+                    color.append([])
+                    for x in range(game.level_test.grid_size):
+                        color[i].append([])
+                        for y in range(game.level_test.grid_size):
+                            color[i][x].append(game.level_test.state[i][x][y].color)
+                print(color)
+
                     
                 
 
