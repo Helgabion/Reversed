@@ -23,9 +23,10 @@ class Game(object):
 
         self.assets = Assets()
 
-        self.level_test = Level(self, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNNNN","NNNBF","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[1,1],[1,1]],[[1]],[[1]],[[1]],[[1,1,1],[1,0,1],[1,1,1]],[[1]]])
-        # self.level_test = Level(self, [[0,0],[0,0]], [[0,0],[0,0]], ["NN","NN"], ["NN","NN"],[[[1]], [[1]]])
-        # self.level_test = Level(self, [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], ["NNN","NBN","NNN"], ["NNN","NNN","NNN"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
+        # self.level_test = Level(self, False, 0, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNNNN","NNNBF","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[1,1],[1,1]],[[1]],[[1]],[[1]],[[1,1,1],[1,0,1],[1,1,1]],[[1]]])
+        # self.level_test = Level(self, False, 0, [[0,0],[0,0]], [[0,0],[0,0]], ["NN","NN"], ["NN","NN"],[[[1]], [[1]]])
+        # self.level_test = Level(self, False, 0, [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], ["NNN","NBN","NNN"], ["NNN","NNN","NNN"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
+        self.level_test = Level(self, True, [2,2,4])
 
         self.level_test.load()
         self.mouse_position = [0,0]
@@ -52,7 +53,7 @@ while game.running:
             if key == 'z':
                 game.level_test.backtrack()
             if key == 'g':
-                print(game.level_test.state)
+                game.level_test.load()
 
                     
                 

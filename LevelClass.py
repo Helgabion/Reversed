@@ -1,27 +1,55 @@
 import constant
 import pygame
+from random import randrange
 from copy import deepcopy
 
 
 class Level(object):
-    def __init__(self, game, colors_L, colors_R, layout_L, layout_R, pattern_list):
+    def __init__(self, game, is_random, dificulty, colors_L=None, colors_R=None, layout_L=None, layout_R=None, pattern_list=None):
         self.game = game
         self.background = game.assets.backgrounds['Temp']
         self.current_background = 0
+        self.is_random = is_random
 
-        self.colors_L = colors_L
-        self.colors_R = colors_R
-
-        self.layout_L = layout_L
-        self.layout_R = layout_R
-
-        self.grid_size = len(self.colors_L)
-
-        self.pattern_list = pattern_list
         self.pattern_block = game.assets.blocks['Pattern'][0]
 
         self.state = []
         self.used_patterns = []
+
+        if self.is_random:
+            
+            self.move_number = dificulty[0]
+            self.block_number = dificulty[1]
+            self.grid_size = dificulty[2]
+
+            self.colors_L = []
+            self.colors_R = []
+
+            self.layout_L = []
+            self.layout_R = []
+
+            color_row = [0 for i in range(self.grid_size)]
+            layout_row_L = ['N' for i in range(self.grid_size)]
+            layout_row_R = ['S' for i in range(self.grid_size)]
+            for i in range(self.grid_size):
+                self.colors_L.append(color_row)
+                self.colors_R.append(color_row)
+                self.layout_L.append(layout_row_L)
+                self.layout_R.append(layout_row_R)
+            self.pattern_list = []
+        else:
+
+            self.colors_L = colors_L
+            self.colors_R = colors_R
+
+            self.layout_L = layout_L
+            self.layout_R = layout_R
+
+            self.pattern_list = pattern_list
+            
+            self.grid_size = len(self.colors_L)
+
+            
 
     def load(self):
         self.blocks_L = []
@@ -35,7 +63,6 @@ class Level(object):
             y += 1
             x = 0
 
-
         self.blocks_R = []
 
         x = y = 0
@@ -47,9 +74,46 @@ class Level(object):
             y += 1
             x = 0
         
-        current_state = deepcopy(self.blocks_L)
-        self.state.append(current_state)
-        
+        if self.is_random:
+
+            self.grid_size = len(self.colors_L)
+            
+            self.pattern_list = []
+            rand_pattern_list = [[[1]],[[0,1,0],[1,1,1],[0,1,0]],[[1,1,1],[1,1,1],[1,1,1]]]
+            for i in range(self.move_number):
+                randint = randrange(len(rand_pattern_list))
+                self.pattern_list.append(rand_pattern_list[randint])
+
+            aux_pattern_list = deepcopy(self.pattern_list)
+            
+            block_list = ['B']
+            for i in range(self.block_number):
+                randx = randrange(self.grid_size)
+                randy = randrange(self.grid_size)
+                randint = randrange(len(block_list))
+                self.blocks_L[randx][randy][0] = block_list[randint]
+                
+            aux_block_list = deepcopy(self.blocks_L)
+
+            for i in range(self.move_number):
+                randx = randrange(self.grid_size)
+                randy = randrange(self.grid_size)
+                print([randx,randy])
+                self.click([randx,randy])
+
+            self.pattern_list = aux_pattern_list
+            for x in range(self.grid_size):
+                for y in range(self.grid_size):
+                    self.blocks_L[x][y][0] = aux_block_list[x][y][0]
+
+            current_state = deepcopy(self.blocks_L)
+            self.state = []
+            self.state.append(current_state)
+        else:
+            
+            current_state = deepcopy(self.blocks_L)
+            self.state.append(current_state)
+            
    
 
     def block_sprite(self, block, color):
