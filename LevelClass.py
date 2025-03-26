@@ -22,6 +22,8 @@ class Level(object):
             self.block_number = dificulty[1]
             self.grid_size = dificulty[2]
 
+            self.solution = []
+
             self.colors_L = []
             self.colors_R = []
 
@@ -52,6 +54,7 @@ class Level(object):
             
 
     def load(self):
+        self.current_background = 0
         self.blocks_L = []
         
         x = y = 0
@@ -98,8 +101,9 @@ class Level(object):
             for i in range(self.move_number):
                 randx = randrange(self.grid_size)
                 randy = randrange(self.grid_size)
-                print([randx,randy])
-                self.click([randx,randy])
+                self.solution.append([randx, randy])
+                print([randx, randy])
+                self.click([randx,randy], False)
 
             self.pattern_list = aux_pattern_list
             for x in range(self.grid_size):
@@ -127,6 +131,10 @@ class Level(object):
             return self.game.assets.blocks['Freeze'][color]
         elif block == 'S':
             return self.game.assets.blocks['Solid'][color]
+        elif block == 'U':
+            return self.game.assets.blocks['Buffer'][color]
+        elif block == 'P':
+            return self.game.assets.blocks['Pattern'][0]
 
     def draw(self):
         self.game.screen.blit(self.background[self.current_background], (0,0))
@@ -149,17 +157,23 @@ class Level(object):
 
 
 
-    def click(self, coords):
+    def click(self, coords, animate=True):
+        self.block_buffer = []
         pattern = self.pattern_list.pop(0)
         self.used_patterns.append(pattern)
-        for x in range(len(pattern[0])):
-            for y in range(len(pattern[0])):
+        for y in range(len(pattern[0])):
+            for x in range(len(pattern[0])):
                 if pattern[y][x]:
-                    self.flip([coords[0]+x-len(pattern[0])//2,coords[1]+y-len(pattern[0])//2])
+                    # sprite = self.block_sprite('P',self.blocks_L[x][y][1])
+                    # sprite.set_alpha(160)
+                    # self.game.screen.blit(pygame.transform.scale(sprite, (constant.SQUARE_SIZE,constant.SQUARE_SIZE)), ((coords[0]+x-len(pattern[0])//2)*constant.SQUARE_SIZE, (coords[1]+y-len(pattern[0])//2)*constant.SQUARE_SIZE))
+                    # self.game.update_display()
+                    self.flip([coords[0]+x-len(pattern[0])//2,coords[1]+y-len(pattern[0])//2], animate)
 
-
+        self.activate_blocks(animate)
         current_state = deepcopy(self.blocks_L)
         self.state.append(current_state)
+
         
         if self.check_puzzle():
             self.current_background = 1
@@ -171,10 +185,23 @@ class Level(object):
             self.pattern_list.insert(0, self.used_patterns.pop())
 
 
-    def activate_bomb(self, coords):
+    def activate_bomb(self, coords, animate):
+        if animate:
+            pygame.time.wait(300)
         for i in range(self.grid_size-1):
-            self.flip([(coords[0] + i+1) % self.grid_size,coords[1]])
-            self.flip([coords[0],(coords[1] + i+1) % self.grid_size])
+            self.flip([coords[0], coords[1]-(i+1)],animate)
+        for i in range(self.grid_size-1):
+            self.flip([coords[0]+(i+1), coords[1]],animate)
+        for i in range(self.grid_size-1):
+            self.flip([coords[0], coords[1]+(i+1)],animate)
+        for i in range(self.grid_size-1):
+            self.flip([coords[0]-(i+1), coords[1]],animate)
+        self.blocks_L[coords[1]][coords[0]][0] = 'N'
+
+        if animate:
+            self.draw_block(coords[1],coords[0])
+            self.game.update_display()
+            pygame.time.wait(300)
 
     def activate_tornado(self, coords):
         aux = self.blocks_L[coords[1]-1][coords[0]-1]
@@ -196,22 +223,35 @@ class Level(object):
                 if coords[0]+i in range(self.grid_size) and coords[1]+j in range(self.grid_size):
                     self.blocks_L[coords[1]+j][coords[0]+i][0] = 'S'
 
+    def draw_block(self, x,y):
+        sprite = self.block_sprite(self.blocks_L[x][y][0],self.blocks_L[x][y][1])
+        self.game.screen.blit(pygame.transform.scale(sprite, (constant.SQUARE_SIZE,constant.SQUARE_SIZE)), (y*constant.SQUARE_SIZE, x*constant.SQUARE_SIZE))
 
-    def flip(self, coords):
+
+    def flip(self, coords, animate):
         if coords[1] in range(self.grid_size) and coords[0] in range(self.grid_size):
-            block = self.blocks_L[coords[1]][coords[0]][0]
-
+            block = self.blocks_L[coords[1]][coords[0]][0] 
             #normal
             if block == 'N':
                 self.blocks_L[coords[1]][coords[0]][1] = 1 - self.blocks_L[coords[1]][coords[0]][1]
+                if animate:
+                    self.draw_block(coords[1],coords[0])
+                    self.game.update_display()
+                    pygame.time.wait(300)
+
 
             # #bombas
             elif block == 'B':
                 self.blocks_L[coords[1]][coords[0]][1] = 1 - self.blocks_L[coords[1]][coords[0]][1]
 
-                self.blocks_L[coords[1]][coords[0]][0] = 'N'
+                if animate:
+                    self.blocks_L[coords[1]][coords[0]][0] = 'U'
+                    self.draw_block(coords[1],coords[0])
+                    self.game.update_display()
+                    pygame.time.wait(900)
 
-                self.activate_bomb(coords)
+                self.block_buffer.append(['B', coords])
+                # self.activate_bomb(coords)
 
             #tornados
             elif block == 'T':
@@ -219,7 +259,8 @@ class Level(object):
                 self.blocks_L[coords[1]][coords[0]][1] = 1 - self.blocks_L[coords[1]][coords[0]][1]
                 self.blocks_L[coords[1]][coords[0]][0] = 'N'
 
-                self.activate_tornado(coords)
+                self.block_buffer.append(['T', coords])
+                # self.activate_tornado(coords)
 
             #freezes
             elif block == 'F':
@@ -228,7 +269,18 @@ class Level(object):
                 #esto lo hago en activate_freeze()
                 # self.blocks_L[coords[1]][coords[0]][0] = 'S'
 
-                self.activate_freeze(coords)
+                self.block_buffer.append(['F', coords])
+                # self.activate_freeze(coords)
+
+    def activate_blocks(self, animate):
+        while len(self.block_buffer):
+            data = self.block_buffer.pop(0)
+            if data[0] == 'B':
+                self.activate_bomb(data[1],animate)
+            elif data[0] == 'T':
+                self.activate_tornado(data[1])
+            elif data[0] == 'F':
+                self.activate_freeze(data[1])
 
     def check_puzzle(self):
         for x in range(self.grid_size):

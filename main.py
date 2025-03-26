@@ -23,7 +23,7 @@ class Game(object):
 
         self.assets = Assets()
 
-        # self.level_test = Level(self, False, 0, [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNNNN","NNNBF","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[1,1],[1,1]],[[1]],[[1]],[[1]],[[1,1,1],[1,0,1],[1,1,1]],[[1]]])
+        # self.level_test = Level(self, False, [0,0,0], [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]], [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]], ["NNNNN","NNNNN","BNNBN","NNNNN","NNNNN"], ["SSSSS","SSSSS","SSSSS","SSSSS","SSSSS"],[[[1]],[[1]],[[1]],[[1,1,1],[1,0,1],[1,1,1]],[[1]]])
         # self.level_test = Level(self, False, 0, [[0,0],[0,0]], [[0,0],[0,0]], ["NN","NN"], ["NN","NN"],[[[1]], [[1]]])
         # self.level_test = Level(self, False, 0, [[0,0,0],[0,0,0],[0,0,0]], [[0,0,0],[0,0,0],[0,0,0]], ["NNN","NBN","NNN"], ["NNN","NNN","NNN"],[[[0,1,0],[1,1,1],[0,1,0]],[[1]]])
         self.level_test = Level(self, True, [2,2,4])
@@ -54,6 +54,16 @@ while game.running:
                 game.level_test.backtrack()
             if key == 'g':
                 game.level_test.load()
+            if key == 's':
+                print('blocks_L = ' + str(game.level_test.blocks_L))
+                print('')
+                print('blocks_R = ' + str(game.level_test.blocks_R))
+                print('')
+                print('pattern_list = ' + str(game.level_test.pattern_list))
+                print('')
+                print('solution : ' + str(game.level_test.solution))
+                print('')
+                print('')
 
                     
                 
