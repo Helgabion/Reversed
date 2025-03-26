@@ -22,23 +22,34 @@ class Level(object):
             self.block_number = dificulty[1]
             self.grid_size = dificulty[2]
 
-            self.solution = []
+            # self.solution = []
 
-            self.colors_L = []
-            self.colors_R = []
+            # self.colors_L = []
+            # self.colors_R = []
 
-            self.layout_L = []
-            self.layout_R = []
+            # self.layout_L = []
+            # self.layout_R = []
+            
+            # if self.grid_size == 1:
+            #     color_list = [[0],[1]]
+            # elif self.grid_size == 2:
+            #     color_list = [[[0,0],[0,0]],[[0,0],[1,1]],[[1,0],[1,0]],[[0,1],[1,0]]]
+            # elif self.grid_size == 3:
+            #     color_list = [[[0,0,0],[0,0,0],[0,0,0]],[[0,1,0],[1,1,1],[0,1,0]],[[1,1,1],[1,0,1],[1,1,1]],[[1,0,1],[0,1,0],[1,0,1]]]
+            # elif self.grid_size == 4:
+            #     color_list = [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[1,1,1,1],[1,0,0,1],[1,0,0,1],[1,1,1,1]],[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],[[1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]]
+            # elif self.grid_size == 5:
+            #     color_list = [[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],[[0,0,0,0,0],[0,1,1,1,0],[0,1,0,1,0],[0,1,1,1,0],[0,0,0,0,0]],[[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,1,0,1,0],[1,0,0,0,1]],[[1,1,1,0,0],[0,0,1,0,1],[1,1,1,1,1],[1,0,1,0,0],[0,0,1,1,1]]]
 
-            color_row = [0 for i in range(self.grid_size)]
-            layout_row_L = ['N' for i in range(self.grid_size)]
-            layout_row_R = ['S' for i in range(self.grid_size)]
-            for i in range(self.grid_size):
-                self.colors_L.append(color_row)
-                self.colors_R.append(color_row)
-                self.layout_L.append(layout_row_L)
-                self.layout_R.append(layout_row_R)
-            self.pattern_list = []
+            # randcolor = randrange(len(color_list))
+            # self.colors_L = color_list[randcolor]
+            # self.colors_R = color_list[randcolor]
+            # layout_row_L = ['N' for i in range(self.grid_size)]
+            # layout_row_R = ['S' for i in range(self.grid_size)]
+            # for i in range(self.grid_size):
+            #     self.layout_L.append(layout_row_L)
+            #     self.layout_R.append(layout_row_R)
+            # self.pattern_list = []
         else:
 
             self.colors_L = colors_L
@@ -54,6 +65,36 @@ class Level(object):
             
 
     def load(self):
+        if self.is_random:
+            self.solution = []
+
+            self.colors_L = []
+            self.colors_R = []
+
+            self.layout_L = []
+            self.layout_R = []
+            
+            if self.grid_size == 1:
+                color_list = [[0],[1]]
+            elif self.grid_size == 2:
+                color_list = [[[0,0],[0,0]],[[0,0],[1,1]],[[1,0],[1,0]],[[0,1],[1,0]]]
+            elif self.grid_size == 3:
+                color_list = [[[0,0,0],[0,0,0],[0,0,0]],[[0,1,0],[1,1,1],[0,1,0]],[[1,1,1],[1,0,1],[1,1,1]],[[1,0,1],[0,1,0],[1,0,1]]]
+            elif self.grid_size == 4:
+                color_list = [[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],[[1,1,1,1],[1,0,0,1],[1,0,0,1],[1,1,1,1]],[[1,0,1,0],[1,0,1,0],[1,0,1,0],[1,0,1,0]],[[1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]]
+            elif self.grid_size == 5:
+                color_list = [[[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],[[0,0,0,0,0],[0,1,1,1,0],[0,1,0,1,0],[0,1,1,1,0],[0,0,0,0,0]],[[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,1,0,1,0],[1,0,0,0,1]],[[0,1,1,0,0],[0,0,1,0,1],[1,1,1,1,1],[1,0,1,0,0],[0,0,1,1,0]]]
+
+            randcolor = randrange(len(color_list))
+            self.colors_L = color_list[randcolor]
+            self.colors_R = color_list[randcolor]
+            layout_row_L = ['N' for i in range(self.grid_size)]
+            layout_row_R = ['S' for i in range(self.grid_size)]
+            for i in range(self.grid_size):
+                self.layout_L.append(layout_row_L)
+                self.layout_R.append(layout_row_R)
+            self.pattern_list = []
+
         self.current_background = 0
         self.blocks_L = []
         
